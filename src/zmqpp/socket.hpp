@@ -117,6 +117,34 @@ public:
 		}
 	}
 
+	/* this overload only required as the template below would otherwise catch 'C'-string arguments */
+	inline
+	void connect(char const* endpoint)
+	{
+		connect (endpoint_t (endpoint));
+	}
+
+	/*!
+	 * Asynchronously connects to multiple endpoints.
+	 * If the endpoint is not inproc then zmq will happily keep trying
+	 * to connect until there is something there.
+	 *
+	 * Inproc sockets must have a valid target already bound before connection
+	 * will work.
+	 *
+	 * This is a helper function that wraps the single item connect in a loop
+	 *
+	 * \param connections a container of zmq endpoints.
+	 */
+	template<typename CTN>
+	void connect(CTN const& connections)
+	{
+		for(typename CTN::const_iterator it = connections.begin(); it != connections.end(); ++it)
+		{
+			connect(*it);
+		}
+	}
+
 	/*!
 	 * Closes the internal zmq socket and marks this instance
 	 * as invalid.
