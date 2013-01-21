@@ -10,6 +10,7 @@
 
 #include <string>
 #include <list>
+#include <ostream>
 
 #include <zmq.h>
 
@@ -445,6 +446,8 @@ private:
 	void track_message(message_t const&, uint32_t const&, bool&);
 };
 
-}
+} // namespace zmqpp
+
+std::ostream & operator<< (std::ostream & os, const zmqpp::socket_type socket_type);
 
 #endif /* ZMQPP_SOCKET_HPP_ */

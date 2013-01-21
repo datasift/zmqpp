@@ -106,6 +106,6 @@ typedef message     message_t;   /*!< \brief message type */
 typedef poller      poller_t;    /*!< \brief poller type */
 typedef socket      socket_t;    /*!< \brief socket type */
 
-}
+} // namespace zmqpp
 
 #endif /* ZMQPP_ZMQPP_HPP_ */

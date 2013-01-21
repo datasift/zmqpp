@@ -632,3 +632,24 @@ void socket::track_message(message const& /* message */, uint32_t const& parts, 
 }
 
 }
+
+std::ostream & operator<< (std::ostream & os, const zmqpp::socket_type socket_type)
+{
+	switch(socket_type)
+	{
+	case zmqpp::socket_type::pair: os << "pair"; break;
+	case zmqpp::socket_type::pub: os << "publish"; break;
+	case zmqpp::socket_type::sub: os << "subscribe"; break;
+	case zmqpp::socket_type::push: os << "push"; break;
+	case zmqpp::socket_type::pull: os << "pull"; break;
+	case zmqpp::socket_type::req: os << "request"; break;
+	case zmqpp::socket_type::rep: os << "reply"; break;
+	case zmqpp::socket_type::xpub: os << "xpublish"; break;
+	case zmqpp::socket_type::xsub: os << "xsubscribe"; break;
+	case zmqpp::socket_type::xreq: os << "xrequest"; break;
+	case zmqpp::socket_type::xrep: os << "xreply"; break;
+	default: os << "unknown socket_type"; break;
+	}
+
+	return os;
+}
