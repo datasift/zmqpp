@@ -25,6 +25,7 @@ boost::program_options::options_description connection_options()
 	options.add_options()
 		("bind,b", boost::program_options::value<std::vector<std::string>>(), "bind to specified endpoint")
 		("connect,c", boost::program_options::value<std::vector<std::string>>(), "connect to specified endpoint")
+		("label,l", boost::program_options::value<std::string>(), "provide the endpoint with a descriptive label")
 		("multipart,m", "enable multipart message sending")
 		;
 
@@ -150,8 +151,14 @@ int main(int argc, char const* argv[])
 	bool can_recv = std::get<2>(data);
 	bool toggles = std::get<3>(data);
 
+	std::string label;
+	if (vm.count("label"))
+	{
+		label = vm["label"].as<std::string>();
+	}
+
 	zmqpp::context context;
-	zmqpp::socket socket(context, type);
+	zmqpp::socket socket(context, type, label.c_str());
 
 	if ("sub" == vm["type"].as<std::string>())
 	{
