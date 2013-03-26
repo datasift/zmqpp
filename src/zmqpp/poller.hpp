@@ -13,6 +13,12 @@
 
 #include "compatibility.hpp"
 
+/* This doesn't work here when put in compatibility.hpp */
+#if defined (__APPLE__) || defined (__MACH__)
+#undef POLL_IN
+#undef POLL_OUT
+#endif
+
 namespace zmqpp
 {
 
