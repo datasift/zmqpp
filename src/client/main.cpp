@@ -239,8 +239,8 @@ int main(int argc, char const* argv[])
 	zmqpp::message message;
 	while(true)
 	{
-		poller.check_for(socket, (can_recv) ? zmqpp::poller::POLL_IN : zmqpp::poller::POLL_NONE);
-		poller.check_for(standardin, (can_send) ? zmqpp::poller::POLL_IN : zmqpp::poller::POLL_NONE);
+		poller.check_for(socket, (can_recv) ? zmqpp::poller::poll_in : zmqpp::poller::poll_none);
+		poller.check_for(standardin, (can_send) ? zmqpp::poller::poll_in : zmqpp::poller::poll_none);
 
 		if(poller.poll())
 		{
@@ -333,7 +333,7 @@ int main(int argc, char const* argv[])
 									std::cout << ">>: ";
 								}
 
-								std::cout << message.get<std::string>(i) << std::endl;
+								std::cout << message.get(i) << std::endl;
 							}
 
 							if (newline)
@@ -343,7 +343,7 @@ int main(int argc, char const* argv[])
 
 							if (
 									(ignore_zeroes || exit_when_no_input) &&
-									(0 == message.parts() || (1 == message.parts() && message.get<std::string>(0).empty()))
+									(0 == message.parts() || (1 == message.parts() && message.get(0).empty()))
 								)
 							{
 								if (exit_when_no_input)
@@ -396,7 +396,7 @@ int main(int argc, char const* argv[])
 									std::cout << ">>: ";
 								}
 
-								std::cout << message.get<std::string>(i) << std::endl;
+								std::cout << message.get(i) << std::endl;
 							}
 
 							if (newline)
@@ -405,7 +405,7 @@ int main(int argc, char const* argv[])
 							}
 
 							if (
-									(0 == message.parts() || (1 == message.parts() && message.get<std::string>(0).empty()))
+									(0 == message.parts() || (1 == message.parts() && message.get(0).empty()))
 								)
 							{
 								std::cerr << "Ignoring final zero-length message" << std::endl;
