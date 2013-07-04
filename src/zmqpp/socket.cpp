@@ -104,6 +104,16 @@ void socket::bind(endpoint_t const& endpoint)
 	}
 }
 
+void socket::unbind(endpoint_t const& endpoint)
+{
+	int result = zmq_unbind(_socket, endpoint.c_str());
+
+	if (0 != result)
+	{
+		throw zmq_internal_exception();
+	}
+}
+
 void socket::connect(endpoint_t const& endpoint)
 {
 	int result = zmq_connect(_socket, endpoint.c_str());
@@ -118,6 +128,16 @@ void socket::connect(endpoint_t const& endpoint)
 		}
 		exception_message += " [" + endpoint + "]";
 		throw zmq_internal_exception(exception_message);
+	}
+}
+
+void socket::disconnect(endpoint_t const& endpoint)
+{
+	int result = zmq_disconnect(_socket, endpoint.c_str());
+
+	if (0 != result)
+	{
+		throw zmq_internal_exception();
 	}
 }
 
