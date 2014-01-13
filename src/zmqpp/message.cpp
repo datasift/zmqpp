@@ -147,7 +147,11 @@ void message::move(void* part, size_t& size, release_function const& release)
 		{
 			throw zmq_internal_exception();
 		}
+	}
 
+	for(size_t i = 0; i < _parts.size(); ++i)
+	{
+		zmq_msg_t& dest = tmp[i].msg;
 		zmq_msg_t& src = _parts[i].msg;
 		if( 0 != zmq_msg_move(&dest, &src) )
 		{
@@ -171,14 +175,20 @@ void message::add(void const* part, size_t const& size)
 {
 	parts_type tmp(_parts.size() + 1);
 
-	for(size_t i = 0; i < _parts.size(); ++i)
+	// fall-back initialisation
+	for(size_t i = 0; i <= _parts.size(); ++i) // NB: inclusive end value
 	{
+		tmp[i].sent = false;
 		zmq_msg_t& dest = tmp[i].msg;
 		if( 0 != zmq_msg_init(&dest) )
 		{
 			throw zmq_internal_exception();
 		}
+	}
 
+	for(size_t i = 0; i < _parts.size(); ++i)
+	{
+		zmq_msg_t& dest = tmp[i].msg;
 		zmq_msg_t& src = _parts[i].msg;
 		if( 0 != zmq_msg_move(&dest, &src) )
 		{
@@ -186,18 +196,18 @@ void message::add(void const* part, size_t const& size)
 		}
 	}
 
-	std::swap(tmp, _parts);
+	zmq_msg_t& msg = tmp.back().msg;
 
-	zmq_msg_t& msg = _parts.back().msg;
-
-	if( 0 != zmq_msg_init_size(&msg, size) )
+	if( 0 != zmq_msg_init_size(&msg, size) ) // ON PATH
 	{
+		// malloc() in msg::init_size() in zmq_msg_init_size() failed
 		throw zmq_internal_exception();
 	}
 
 	void* msg_data = zmq_msg_data(&msg);
-
 	memcpy(msg_data, part, size);
+
+	std::swap(tmp, _parts);
 }
 
 // Stream reader style
@@ -456,7 +466,7 @@ void message::sent(size_t const& part)
 }
 
 // Note that these releasers are not thread safe, the only safety is provided by
-// the socket class taking ownership so no updates can happen while zmq does it's thing
+// the socket class taking ownership so no updates can happen while zmq does its thing
 // If used in a custom class this has to be dealt with.
 void message::release_callback(void* data, void* hint)
 {
