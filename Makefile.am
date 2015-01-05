@@ -6,25 +6,39 @@ AM_CPPFLAGS = -I${top_srcdir}/src ${ZEROMQ_CFLAGS}
 
 # Build rules for zmqpp library
 pkginclude_HEADERS = \
+	src/zmqpp/actor.hpp \
 	src/zmqpp/compatibility.hpp \
 	src/zmqpp/context.hpp \
 	src/zmqpp/context_options.hpp \
+	src/zmqpp/curve.hpp \
 	src/zmqpp/exception.hpp \
+	src/zmqpp/frame.hpp \
+	src/zmqpp/inet.hpp \
 	src/zmqpp/message.hpp \
 	src/zmqpp/poller.hpp \
+	src/zmqpp/reactor.hpp \
+	src/zmqpp/signal.hpp \
 	src/zmqpp/socket.hpp \
+	src/zmqpp/socket_mechanisms.hpp \
 	src/zmqpp/socket_options.hpp \
 	src/zmqpp/socket_types.hpp \
+	src/zmqpp/z85.hpp \
 	src/zmqpp/zmqpp.hpp
 
 lib_LTLIBRARIES = \
 	src/zmqpp/libzmqpp.la
 
 src_zmqpp_libzmqpp_la_SOURCES = \
-	src/zmqpp/context.cpp    \
-	src/zmqpp/message.cpp     \
-	src/zmqpp/poller.cpp   \
+	src/zmqpp/actor.cpp \
+	src/zmqpp/context.cpp \
+	src/zmqpp/curve.cpp \
+	src/zmqpp/frame.cpp \
+	src/zmqpp/message.cpp \
+	src/zmqpp/poller.cpp \
+	src/zmqpp/reactor.cpp \
+	src/zmqpp/signal.cpp \
 	src/zmqpp/socket.cpp \
+	src/zmqpp/z85.cpp \
 	src/zmqpp/zmqpp.cpp
 src_zmqpp_libzmqpp_la_LDFLAGS = -version-info 0:0:0
 src_zmqpp_libzmqpp_la_LIBADD = $(ZEROMQ_LIBS)
@@ -59,15 +73,18 @@ check_PROGRAMS=
 UNIT_TESTS += src/tests/zmqpp_test
 check_PROGRAMS += src/tests/zmqpp_test
 src_tests_zmqpp_test_SOURCES = \
+	src/tests/test_actor.cpp \
 	src/tests/test_context.cpp \
 	src/tests/test_inet.cpp \
 	src/tests/test_load.cpp \
 	src/tests/test_message.cpp \
 	src/tests/test_message_stream.cpp \
 	src/tests/test_poller.cpp \
+	src/tests/test_reactor.cpp \
 	src/tests/test_sanity.cpp \
 	src/tests/test_socket.cpp \
-	src/tests/test_socket_options.cpp
+	src/tests/test_socket_options.cpp \
+	src/tests/test_z85.cpp
 src_tests_zmqpp_test_CFLAGS = -I$(top_srcdir)/src $(ZEROMQ_CFLAGS) $(BOOST_CPPFLAGS)
 src_tests_zmqpp_test_LDADD = $(top_builddir)/src/zmqpp/libzmqpp.la $(BOOST_UNIT_TEST_FRAMEWORK_LIB) $(LDADD)
 
