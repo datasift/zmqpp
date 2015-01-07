@@ -9,6 +9,7 @@
 #define ZMQPP_CURVE_HPP_
 
 #include <string>
+#include <zmq.h>
 
 namespace zmqpp { namespace curve
 {
@@ -19,7 +20,9 @@ struct keypair
 	std::string secret_key;
 };
 
+#if (ZMQ_VERSION_MAJOR >= 4)
 keypair generate_keypair();
+#endif
 
 } }
 

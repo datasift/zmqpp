@@ -471,7 +471,7 @@ void socket::set(socket_option const option, int const value)
 	case socket_option::multicast_loopback:
 #endif
 #if (ZMQ_VERSION_MAJOR > 3) || ((ZMQ_VERSION_MAJOR == 3) && (ZMQ_VERSION_MINOR >= 2))
-#if (ZMQ_VERSION_MINOR == 2)
+#if (ZMQ_VERSION_MAJOR == 3 && ZMQ_VERSION_MINOR == 2)
 	case socket_option::delay_attach_on_connect:
 #else
 	case socket_option::immediate:
@@ -551,7 +551,7 @@ void socket::set(socket_option const option, bool const value)
 	case socket_option::ipv4_only:
 #endif
 #if (ZMQ_VERSION_MAJOR > 3) || ((ZMQ_VERSION_MAJOR == 3) && (ZMQ_VERSION_MINOR >= 2))
-#if (ZMQ_VERSION_MINOR == 2)
+#if (ZMQ_VERSION_MAJOR == 3 && ZMQ_VERSION_MINOR == 2)
 	case socket_option::delay_attach_on_connect:
 #else
 	case socket_option::immediate:
@@ -691,7 +691,7 @@ void socket::get(socket_option const option, int& value) const
 	case socket_option::ipv4_only:
 #endif
 #if (ZMQ_VERSION_MAJOR > 3) || ((ZMQ_VERSION_MAJOR == 3) && (ZMQ_VERSION_MINOR >= 2))
-#if (ZMQ_VERSION_MINOR == 2)
+#if (ZMQ_VERSION_MAJOR == 3 && ZMQ_VERSION_MINOR == 2)
 	case socket_option::delay_attach_on_connect:
 #else
 	case socket_option::immediate:
@@ -742,7 +742,7 @@ void socket::get(socket_option const option, bool& value) const
 	case socket_option::ipv4_only:
 #endif
 #if (ZMQ_VERSION_MAJOR > 3) || ((ZMQ_VERSION_MAJOR == 3) && (ZMQ_VERSION_MINOR >= 2))
-#if (ZMQ_VERSION_MINOR == 2)
+#if (ZMQ_VERSION_MAJOR == 3 && ZMQ_VERSION_MINOR == 2)
 	case socket_option::delay_attach_on_connect:
 #else
 	case socket_option::immediate:
@@ -913,7 +913,7 @@ signal socket::wait()
     while (true)
     {
         message msg;
-        receive(msg);
+        while(!receive(msg));
 
         if (msg.is_signal())
         {
