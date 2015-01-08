@@ -77,6 +77,8 @@ public:
 
 	void get(std::string& string, size_t const part) const;
 
+	void get(size_t& unsigned_long, size_t const part) const;
+
 	// Warn: If a pointer type is requested the message (well zmq) still 'owns'
 	// the data and will release it when the message object is freed.
 	template<typename Type>
@@ -187,6 +189,7 @@ public:
 
 	message& operator<<(char const* c_string);
 	message& operator<<(std::string const& string);
+	message& operator<<(size_t const unsigned_long);
 
 	// Queue manipulation
 	void push_front(void const* part, size_t const size);
@@ -209,6 +212,7 @@ public:
 
 	void push_front(char const* c_string);
 	void push_front(std::string const& string);
+	void push_front(size_t const unsigned_long);
 
 	void pop_front();
 

@@ -211,6 +211,14 @@ void message::get(std::string& string, size_t const part) const
 	string.assign( get(part) );
 }
 
+void message::get(size_t& unsigned_long, size_t const part) const
+{
+	assert(sizeof(size_t) == size(part));
+
+	size_t const* network_order = static_cast<size_t const*>(raw_data(part));
+	unsigned_long = ntohll(*network_order);
+}
+
 
 // Stream writer style - these all use copy styles
 message& message::operator<<(int8_t const integer)
@@ -318,6 +326,14 @@ message& message::operator<<(std::string const& string)
 	return *this;
 }
 
+message& message::operator<<(size_t const unsigned_long)
+{
+	size_t network_order = htonll(unsigned_long);
+	add_raw(reinterpret_cast<void const*>(&network_order), sizeof(size_t));
+
+	return *this;
+}
+
 void message::push_front(void const* part, size_t const size)
 {
 	_parts.emplace( _parts.begin(), part, size );
@@ -404,6 +420,12 @@ void message::push_front(char const* c_string)
 void message::push_front(std::string const& string)
 {
 	push_front(string.data(), string.size());
+}
+
+void message::push_front(size_t const unsigned_long)
+{
+	size_t network_order = htonll(unsigned_long);
+	push_front(&network_order, sizeof(size_t));
 }
 
 void message::pop_front()
