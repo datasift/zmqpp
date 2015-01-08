@@ -7,6 +7,7 @@ AM_CPPFLAGS = -I${top_srcdir}/src ${ZEROMQ_CFLAGS}
 # Build rules for zmqpp library
 pkginclude_HEADERS = \
 	src/zmqpp/actor.hpp \
+	src/zmqpp/auth.hpp \
 	src/zmqpp/compatibility.hpp \
 	src/zmqpp/context.hpp \
 	src/zmqpp/context_options.hpp \
@@ -23,6 +24,7 @@ pkginclude_HEADERS = \
 	src/zmqpp/socket_options.hpp \
 	src/zmqpp/socket_types.hpp \
 	src/zmqpp/z85.hpp \
+	src/zmqpp/zap_request.hpp \
 	src/zmqpp/zmqpp.hpp
 
 lib_LTLIBRARIES = \
@@ -30,6 +32,7 @@ lib_LTLIBRARIES = \
 
 src_zmqpp_libzmqpp_la_SOURCES = \
 	src/zmqpp/actor.cpp \
+	src/zmqpp/auth.cpp \
 	src/zmqpp/context.cpp \
 	src/zmqpp/curve.cpp \
 	src/zmqpp/frame.cpp \
@@ -39,6 +42,7 @@ src_zmqpp_libzmqpp_la_SOURCES = \
 	src/zmqpp/signal.cpp \
 	src/zmqpp/socket.cpp \
 	src/zmqpp/z85.cpp \
+	src/zmqpp/zap_request.cpp \
 	src/zmqpp/zmqpp.cpp
 src_zmqpp_libzmqpp_la_LDFLAGS = -version-info 0:0:0
 src_zmqpp_libzmqpp_la_LIBADD = $(ZEROMQ_LIBS)
@@ -74,6 +78,7 @@ UNIT_TESTS += src/tests/zmqpp_test
 check_PROGRAMS += src/tests/zmqpp_test
 src_tests_zmqpp_test_SOURCES = \
 	src/tests/test_actor.cpp \
+	src/tests/test_auth.cpp \
 	src/tests/test_context.cpp \
 	src/tests/test_inet.cpp \
 	src/tests/test_load.cpp \
