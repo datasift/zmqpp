@@ -213,10 +213,8 @@ void message::get(std::string& string, size_t const part) const
 
 void message::get(size_t& unsigned_long, size_t const part) const
 {
-	assert(sizeof(size_t) == size(part));
-
-	size_t const* network_order = static_cast<size_t const*>(raw_data(part));
-	unsigned_long = ntohll(*network_order);
+	uint64_t u64 = static_cast<uint64_t>(unsigned_long);
+	get(u64, sizeof(u64));
 }
 
 
@@ -328,10 +326,8 @@ message& message::operator<<(std::string const& string)
 
 message& message::operator<<(size_t const unsigned_long)
 {
-	size_t network_order = htonll(unsigned_long);
-	add_raw(reinterpret_cast<void const*>(&network_order), sizeof(size_t));
-
-	return *this;
+	uint64_t u64 = static_cast<uint64_t>(unsigned_long);
+	return *this << u64;
 }
 
 void message::push_front(void const* part, size_t const size)
@@ -424,8 +420,8 @@ void message::push_front(std::string const& string)
 
 void message::push_front(size_t const unsigned_long)
 {
-	size_t network_order = htonll(unsigned_long);
-	push_front(&network_order, sizeof(size_t));
+	uint64_t u64 = static_cast<uint64_t>(unsigned_long);
+	push_front(u64);
 }
 
 void message::pop_front()
