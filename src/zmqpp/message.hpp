@@ -1,3 +1,12 @@
+/*
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * This file is part of zmqpp.
+ * Copyright (c) 2011-2015 Contributors as noted in the AUTHORS file.
+ */
+
 /**
  * \file
  *
@@ -267,6 +276,18 @@ public:
 	 * @return the new read_cursor
 	 */
 	size_t next() NOEXCEPT { return ++_read_cursor; }
+
+
+#if (ZMQ_VERSION_MAJOR == 4 && ZMQ_VERSION_MINOR >= 1)
+	/**
+	* Attemps to retrieve a metadata property from a message.
+	* The underlying call is `zmq_msg_gets()`.
+	*
+	* @note The message MUST have at least one frame, otherwise this wont work.
+	*/
+	bool get_property(const std::string &property, std::string &out);
+#endif
+
 private:
 	typedef std::vector<frame> parts_type;
 	parts_type _parts;

@@ -1,4 +1,13 @@
 /*
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * This file is part of zmqpp.
+ * Copyright (c) 2011-2015 Contributors as noted in the AUTHORS file.
+ */
+
+/*
  *  Created on: 9 Aug 2011
  *      Author: Ben Gray (@benjamg)
  */
@@ -483,4 +492,29 @@ bool message::is_signal() const
     return false;
 }
 
+#if (ZMQ_VERSION_MAJOR == 4 && ZMQ_VERSION_MINOR >= 1)
+bool message::get_property(const std::string &property, std::string &out)
+{
+	zmq_msg_t *zmq_raw_msg;
+	try
+	{
+		zmq_raw_msg = &raw_msg();
+	}
+	catch (zmqpp::exception &e) // empty
+	{
+		return false;
+	}
+
+	const char *property_value = zmq_msg_gets(zmq_raw_msg, property.c_str());
+	if (property_value == NULL)
+	{
+		// EINVAL is the only error code
+		assert(errno == EINVAL);
+		return false;
+	}
+
+	out = std::string(property_value);
+	return true;
+}
+#endif
 }

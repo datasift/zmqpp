@@ -1,3 +1,12 @@
+/*
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * This file is part of zmqpp.
+ * Copyright (c) 2011-2015 Contributors as noted in the AUTHORS file.
+ */
+
 /**
  * \file
  *
@@ -31,7 +40,8 @@ public:
     /*! 
      * Send a ZAP reply to the handler socket
      */
-    void reply (std::string status_code, std::string status_text);
+    void reply(const std::string &status_code, const std::string &status_text,
+            const std::string &user_id);
 
     /*! 
      * Get Version
@@ -83,7 +93,8 @@ public:
     }
 
     /*! 
-     * Get client_key for CURVE security mechanism
+     * Get client_key for CURVE security mechanism.
+     * The key is z85 encoded.
      */
     const std::string & get_client_key() const {
         return client_key;

@@ -1,3 +1,12 @@
+/*
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * This file is part of zmqpp.
+ * Copyright (c) 2011-2015 Contributors as noted in the AUTHORS file.
+ */
+
 /**
  * \file
  *
@@ -91,7 +100,6 @@ ZMQPP_COMPARABLE_ENUM socket_option {
  #if (ZMQ_VERSION_MAJOR > 4) || ((ZMQ_VERSION_MAJOR == 4) && (ZMQ_VERSION_MINOR >= 1))
 	handshake_interval        = ZMQ_HANDSHAKE_IVL, /*!< Maximum handshake interval */
 	type_of_service           = ZMQ_TOS, /*!< Type-of-Service socket override status */
-	identity_fd               = ZMQ_IDENTITY_FD, /*!< FD associated with given identity - get only */
 	connect_rid               = ZMQ_CONNECT_RID, /*!< Assign the next outbound connection id - set only */
 	ipc_filter_gid            = ZMQ_IPC_FILTER_GID, /*!< Group ID filters to allow new IPC connections - set only */
 	ipc_filter_pid            = ZMQ_IPC_FILTER_PID, /*!< Process ID filters to allow new IPC connections - set only */

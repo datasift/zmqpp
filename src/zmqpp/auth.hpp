@@ -1,3 +1,12 @@
+/*
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ * This file is part of zmqpp.
+ * Copyright (c) 2011-2015 Contributors as noted in the AUTHORS file.
+ */
+
 /**
  * \file
  *
@@ -114,14 +123,16 @@ private:
 	/*!
 	 * Handle a PLAIN authentication request from libzmq core
 	 *
+	 * @param user_id store the user as the User-Id.
 	 */
-    	bool authenticate_plain(zap_request& request);
+    	bool authenticate_plain(zap_request& request, std::string &user_id);
 
 	/*!
 	 * Handle a CURVE authentication request from libzmq core
 	 *
+	 * @param user_id store the public key (z85 encoded) as the User-Id.
 	 */
-    	bool authenticate_curve(zap_request& request);
+    	bool authenticate_curve(zap_request& request, std::string &user_id);
 
     	/*!
 	 * Handle a GSSAPI authentication request from libzmq core
@@ -142,7 +153,7 @@ private:
     	std::unordered_map<std::string, std::string> 	passwords;      // PLAIN passwords, if loaded
     	std::unordered_set<std::string> 		client_keys;    // Client public keys
     	std::string 				 	domain;			// ZAP domain
-    	bool 					 	allow_any;      // CURVE allows arbitrary clients
+    	bool                        curve_allow_any;      // CURVE allows arbitrary clients
     	bool 					 	terminated;     // Did caller ask us to quit?
     	bool 					 	verbose;        // Verbose logging enabled?
 
