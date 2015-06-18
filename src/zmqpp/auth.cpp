@@ -26,6 +26,10 @@
 
 #if (ZMQ_VERSION_MAJOR > 3)
 
+#if defined(ZMQPP_NO_CONSTEXPR)
+	const char * const zmqpp::auth::zap_endpoint_ = "inproc://zeromq.zap.01";
+#endif
+
 namespace zmqpp
 {
 auth::auth(context& ctx) :
@@ -40,7 +44,7 @@ auth::auth(context& ctx) :
             zap_handler.bind(zap_endpoint_);
             pipe->send(signal::ok);
         }
-        catch (zmq_internal_exception &e) {
+        catch (zmq_internal_exception const&) {
             // by returning false here, the actor will send signal::ko
             // this will make the actor constructor throw.
             // we could also to the ourselves: pipe->send(signal::ko);)

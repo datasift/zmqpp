@@ -78,6 +78,9 @@
 
 #if defined(_MSC_VER)
 #define NOEXCEPT throw()
+#if _MSC_VER < 1900
+#	define ZMQPP_NO_CONSTEXPR
+#endif
 #if _MSC_VER < 1800
 #define ZMQPP_EXPLICITLY_DELETED
 #endif // if _MSC_VER < 1800
@@ -100,6 +103,20 @@
 #ifndef NOEXCEPT
 #define NOEXCEPT noexcept
 #endif
+
+// There are a couple of methods that take a raw socket in form of a 'file descriptor'. Under POSIX
+// this is simply an int. But under Windows this type must be a SOCKET. In order to hide this 
+// platform detail we create a raw_socket_t which is a SOCKET under Windows and an int on all the
+// other platforms. This is practically the same as libzmq does with its zmq_pollitem_t struct.
+namespace zmqpp
+{
+#ifdef _WIN32
+	typedef SOCKET raw_socket_t;
+#else
+	typedef int raw_socket_t;
+#endif
+}
+
 
 #endif /* ZMQPP_COMPATIBILITY_HPP_ */
 
