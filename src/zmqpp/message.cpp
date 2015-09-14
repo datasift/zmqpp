@@ -220,6 +220,12 @@ void message::get(std::string& string, size_t const part) const
 	string.assign( get(part) );
 }
 
+void message::get(size_t& unsigned_long, size_t const part) const
+{
+	uint64_t u64 = static_cast<uint64_t>(unsigned_long);
+	get(u64, sizeof(u64));
+}
+
 
 // Stream writer style - these all use copy styles
 message& message::operator<<(int8_t const integer)
@@ -327,6 +333,12 @@ message& message::operator<<(std::string const& string)
 	return *this;
 }
 
+message& message::operator<<(size_t const unsigned_long)
+{
+	uint64_t u64 = static_cast<uint64_t>(unsigned_long);
+	return *this << u64;
+}
+
 void message::push_front(void const* part, size_t const size)
 {
 	_parts.emplace( _parts.begin(), part, size );
@@ -413,6 +425,12 @@ void message::push_front(char const* c_string)
 void message::push_front(std::string const& string)
 {
 	push_front(string.data(), string.size());
+}
+
+void message::push_front(size_t const unsigned_long)
+{
+	uint64_t u64 = static_cast<uint64_t>(unsigned_long);
+	push_front(u64);
 }
 
 void message::pop_front()
