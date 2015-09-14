@@ -124,7 +124,7 @@ void socket::unbind(endpoint_t const& endpoint)
 
 	if (0 != result)
 	{
-		throw zmq_internal_exception("connect [" + endpoint + "]");
+		throw zmq_internal_exception("unbind [" + endpoint + "]");
 	}
 }
 #endif
